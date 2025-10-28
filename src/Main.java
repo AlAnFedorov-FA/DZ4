@@ -6,7 +6,7 @@ import java.util.Scanner;
 interface Observer {
      // Методы для изменения состояний наблюдаемого объекта: newState, addedText - новые состояния
     void update(String newState);
-    void onTextAppended(String addedText);
+    void onTextAppended(String addedText) throws Exception; //добавлена возможность выброса исключений
 }
 
 // Основной класс, реализующий шаблон Наблюдатель
@@ -17,9 +17,12 @@ class ObservableStringBuilder {
 
    // Конструктор класса
     ObservableStringBuilder() {
+        try { // добавлена обработка исключений
         this.builder = new StringBuilder();
         this.observers = new ArrayList<>();
         this.notificationCounter = 0; // Начальное значение счетчика
+        } catch (Exception e) {
+            System.err.println("Ошибка при инициализации ObservableStringBuilder: " + e.getMessage());
     }
 
 // метод для чередования сообщений наблюдателей
@@ -156,9 +159,12 @@ public class Main {
     }
 // Метод для взаимодействия с пользователем и запуска обработки заявко
     private static void appendText() {
+        try { // добавлена обработка исключений
         System.out.print("Введите текст Заявки: ");
         String text = scanner.nextLine();
         osb.clear(); // Очищаем перед добавлением новой заявки
         osb.append(text);
+        } catch (Exception e) {
+            System.err.println("Ошибка при вводе текста");
     }
 }
